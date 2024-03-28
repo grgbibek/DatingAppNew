@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ export class HomeComponent {
   registerMode = false;
   users: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.getUsers();
@@ -21,7 +22,7 @@ export class HomeComponent {
       next: (response) => {
         this.users = response;
       },
-      error: error => console.log(error),
+      error: error => this.toastr.error(error.error),
       complete: () => console.log('Request has completed')
     });
   }
