@@ -10,8 +10,8 @@ namespace API.DTOs
         public int Id { get; set; }
         public string UserName { get; set; }
         public string PhotoUrl { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
+        // public byte[] PasswordHash { get; set; }
+        // public byte[] PasswordSalt { get; set; }
         public int Age { get; set; }
         public string KnownAs { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;
