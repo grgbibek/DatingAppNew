@@ -1,6 +1,8 @@
 using API.Data;
+using API.Entities;
 using API.Extensions;
 using API.Middleware;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,8 +32,11 @@ app.MapControllers();
     var services = scope.ServiceProvider;
     try{
         var context = services.GetRequiredService<DataContext>();
-        await context.Database.MigrateAsync();
-        await Seed.SeedUsers(context);
+        await context.Database.MigrateAsync(); //runs migrations when application start or restart if there are any changes
+        var userManager = services.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+
+        await Seed.SeedUsers(userManager,roleManager);
     }catch(Exception ex){
         var logger = services.GetService<ILogger<Program>>();
         logger.LogError(ex, "An error occured during migration.");
