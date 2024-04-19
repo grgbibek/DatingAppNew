@@ -2,6 +2,7 @@ using API.Data;
 using API.Entities;
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,11 @@ var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-app.UseCors( builder => builder.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+app.UseCors( builder => builder
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials() //used for signalr
+    .WithOrigins("http://localhost:4200"));
 
 app.UseHttpsRedirection();
 
@@ -27,6 +32,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessageHub>("hubs/message");
 #region Seeding
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
@@ -36,6 +43,7 @@ app.MapControllers();
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
         var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
 
+        await context.Database.ExecuteSqlRawAsync("DELETE FROM [Connections]");
         await Seed.SeedUsers(userManager,roleManager);
     }catch(Exception ex){
         var logger = services.GetService<ILogger<Program>>();
