@@ -31,6 +31,7 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomerRouteReuseStrategy } from './_services/customerRouteReuseStrategy';
+import { ConfirmComponent } from './modals/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { CustomerRouteReuseStrategy } from './_services/customerRouteReuseStrate
     HasRoleDirective,
     UserManagementComponent,
     PhotoManagementComponent,
-    RolesModalComponent
+    RolesModalComponent,
+    ConfirmComponent
   ],
   imports: [
     BrowserModule,

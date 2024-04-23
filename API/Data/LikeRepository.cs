@@ -10,7 +10,7 @@ using API.Helpers;
 using API.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Services
+namespace API.Data
 {
     public class LikeRepository : ILikeRepository
     {

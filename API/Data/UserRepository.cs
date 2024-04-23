@@ -11,7 +11,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Services
+namespace API.Data
 {
     public class UserRepository : IUserRepository
     {
@@ -65,16 +65,19 @@ namespace API.Services
                 .SingleOrDefaultAsync(x => x.UserName == username);
         }
 
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users
+                .Where(x => x.UserName == username)
+                .Select(x => x.Gender)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _context.Users
             .Include(u => u.Photos)
             .ToListAsync();
-        }
-
-        public async Task<bool> SavelAllAsync()
-        {
-           return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(AppUser user)
