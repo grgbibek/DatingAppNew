@@ -30,10 +30,16 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles(); //for reading wwwroot folder and index.html file
+app.UseStaticFiles(); //for reading js
+
 app.MapControllers();
 
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<MessageHub>("hubs/message");
+
+app.MapFallbackToController("Index", "Fallback"); //added for angular functioning
+
 #region Seeding
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
